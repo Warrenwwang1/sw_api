@@ -2,6 +2,7 @@
   "name": "sw_api",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://warrenwwang1.github.io/sw_api",
   "dependencies": {
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
@@ -11,6 +12,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -b master -d build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
