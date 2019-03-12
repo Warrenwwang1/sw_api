@@ -1,20 +1,26 @@
 import React, { Component } from 'react';
 import './App.css';
+import vader from './darthvader.jpg';
+import yoda from './yoda.jpg';
+import stormtrooper from './stormtrooper.png';
+
+
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
       data: [],
-      title: "",
+      title: "Your Star Wars Doppelganger is...",
       possibilities: [],
       suggestions: [],
       count: 0,
-      questions: ["What is your hair color?", "what is your eye color?", "height? (in cm)", "mass? (in kg)"],
+      questions: ["What is your hair color?", "What is your eye color?", "height? (in cm)", "mass? (in kg)"],
       searchAttributes: ["hair_color", "eye_color", "height", "weight"],
       answer: "",
       films: [],
-      next: null
+      next: null,
+      failed: ""
     };
 
     this.search = this.search.bind(this);
@@ -24,24 +30,21 @@ class App extends Component {
 
   search(event) {
     if (event.key == "Enter") {
+      console.log("next is " + this.state.next);
+
       let i;
       let found = false;
       let numPoss = this.state.possibilities.length;
       let poss = this.state.possibilities;
       let filteredPoss = [];
-
-
-      console.log("count is at " +this.state.count)
-      console.log("ATTRIBUTES" + this.state.searchAttributes);
-      console.log("numPoss" + numPoss);
-
       let att = this.state.searchAttributes[this.state.count];
+
 
       let j = 0;
 
-      this.setState({
-        possibilities: []
-      })
+      // this.setState({
+      //   possibilities: []
+      // })
 
       for (i = 0; i <numPoss; i ++) {
         console.log("LAST POS" + poss[i][att]);
@@ -58,34 +61,33 @@ class App extends Component {
 
     if(!found) {
       console.log("Could not find " + event.target.value);
+      this.setState({
+        failed: "Could not find " + event.target.value
+      })
       
       return;
     }
-    console.log(filteredPoss);
+    console.log("filtered possibilities: " + filteredPoss);
 
     this.setState({
       possibilities: filteredPoss,
+      failed: "possiblilities: "+ filteredPoss.map(x => x.name),
+      suggestions: (filteredPoss.filter(y => (y != "n/a"))).map(x => x[this.state.searchAttributes[this.state.count]])
+
 
 
     });
     if (filteredPoss.length == 1) {
       this.setState({
-        title: filteredPoss[0].name
+        title: "You are " + filteredPoss[0].name,
+        questions: [] ,
+        failed: "May the force be with you"
       });
     }
 
-
-
     this.setState({
-      
       count: this.state.count + 1
-
     });
-
-    // let z;
-    // for(z = 0; z <= filteredPoss.length; z ++) {
-    //   this.state.possibilities[z] = filteredPoss[z];
-    // }
     console.log("poss should be filtered: " + this.state.possibilities);
 
    
@@ -100,6 +102,12 @@ class App extends Component {
       return;
 
     }
+    if(this.state.count == this.state.questions.length-1) {
+      this.setState({
+        title: "You could be any of the following " + filteredPoss.map(x => x.name)
+      })
+      return;
+    }
 
 
   }
@@ -111,12 +119,19 @@ class App extends Component {
     const response = await fetch('https://swapi.co/api/people/');
     const json = await response.json();  
     this.setState({
-       title: "Your Star Wars Doppelganger is...",
        data: json.results,
        next: json.next,
        possibilities:json.results,
-       suggestions: (json.results.filter(y => !(y == "n/a"))).map(x => x.hair_color)
+       suggestions: (json.results.filter(y => (y != "n/a"))).map(x => x[this.state.searchAttributes[this.state.count]])
       });
+      // while (json.next != null) {
+      //   const response = await fetch(json.results.next);
+      //   const json = await response.json();  
+
+      //   this.setState({
+      //     possibilities: possibilities + json.results
+      //   })
+      // }
   }f
 
   render() {
@@ -125,9 +140,18 @@ class App extends Component {
         {/* <div className = "title"> */}
           <h className = "title" >{this.state.title}</h>
         {/* </div> */}
-        <p className = "question" >{this.state.questions[this.state.count]}</p>
+        <div className = "pictures">
+          <img className = "picture" src = {vader}></img>
+          <img className = "pictureS" src = {stormtrooper}></img>
 
-        <input className = "input_field" placeholder= {this.state.suggestions} onKeyPress = {this.search}/>
+
+        </div>
+
+        <p className = "question" >{this.state.questions[this.state.count]}</p>
+        <p className = "failed" >{this.state.failed}</p>
+
+
+        <input className = "input_field" placeholder= {"ex: " + this.state.suggestions} onKeyPress = {this.search}/>
 
       {console.log(this.state.possibilities)}
 

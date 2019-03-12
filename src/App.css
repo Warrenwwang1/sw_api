@@ -7,31 +7,65 @@
 }
 
 .title {
-  font-size: 100px;
+  font-size: 80px;
 }
+
+.pictures {
+  text-align: left;
+  height: 30vh;
+  width:100vw;
+    position: absolute;
+  background-color: transparent;
+
+}
+
+.picture {
+  height:100%;
+
+}
+.pictureS {
+  position:absolute;
+  height:90%;
+  right:5vw;
+
+}
+
 
 .question {
   position: relative;
-  top:40vh;
+  top:10vh;
   font-size: 30px;
 }
+.failed {
+  position: relative;
+  top:10vh;
+  font-size: 20px;
+}
+
 
 .input_field {
   background-color: black;
   border: none;
+  height:15vh;
   width:25%;
+  font-size:25px;
+  text-align: center;
   color: #FFD700;
   position: relative;
-  top:50vh;
+  top: 30vh;
 
   border: 1px solid transparent;
-  border-top: none;
+  border-left: none; 
   padding: 15px;
-  -webkit-border-image: url(border.png) 30 stretch; /* Safari 3.1-5 */
+  -webkit-border-image: url(border.png)1 stretch; /* Safari 3.1-5 */
 
 
 }
 
 ::placeholder {
   color: #FFD700;
+  font-size:25px;
+}
+:focus {
+  outline: none;
 }
