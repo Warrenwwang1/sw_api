@@ -1,5 +1,5 @@
 {
-  "main.css": "/sw_api/static/css/main.82810d5a.chunk.css",
+  "main.css": "/sw_api/static/css/main.9a0ecece.chunk.css",
   "main.js": "/sw_api/static/js/main.1c027b5e.chunk.js",
   "main.js.map": "/sw_api/static/js/main.1c027b5e.chunk.js.map",
   "runtime~main.js": "/sw_api/static/js/runtime~main.e3349c0c.js",
@@ -7,9 +7,9 @@
   "static/js/2.df48707e.chunk.js": "/sw_api/static/js/2.df48707e.chunk.js",
   "static/js/2.df48707e.chunk.js.map": "/sw_api/static/js/2.df48707e.chunk.js.map",
   "index.html": "/sw_api/index.html",
-  "precache-manifest.58f8f474b4f296d92f40658f725ddfec.js": "/sw_api/precache-manifest.58f8f474b4f296d92f40658f725ddfec.js",
+  "precache-manifest.b74cee9623de06909c12fb0750ef30b1.js": "/sw_api/precache-manifest.b74cee9623de06909c12fb0750ef30b1.js",
   "service-worker.js": "/sw_api/service-worker.js",
-  "static/css/main.82810d5a.chunk.css.map": "/sw_api/static/css/main.82810d5a.chunk.css.map",
+  "static/css/main.9a0ecece.chunk.css.map": "/sw_api/static/css/main.9a0ecece.chunk.css.map",
   "static/media/App.css": "/sw_api/static/media/border.83911c3d.png",
   "static/media/yoda.jpg": "/sw_api/static/media/yoda.89988f52.jpg"
 }
