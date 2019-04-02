@@ -15,8 +15,8 @@ class App extends Component {
       possibilities: [],
       suggestions: [],
       count: 0,
-      questions: ["What is your hair color?", "What is your eye color?", "height? (in cm)", "mass? (in kg)"],
-      searchAttributes: ["hair_color", "eye_color", "height", "weight"],
+      questions: ["What is your hair color?", "What is your eye color?", "Gender? (none is an option)", "What is your skin color?", "height? (in cm)", "mass? (in kg)"],
+      searchAttributes: ["hair_color", "eye_color", "gender", "skin_color", "height", "weight"],
       answer: "",
       films: [],
       next: null,
@@ -24,13 +24,13 @@ class App extends Component {
     };
 
     this.search = this.search.bind(this);
+    // this.nextPage = this.nextPage.bind(this);
 
 
   }
 
   search(event) {
     if (event.key == "Enter") {
-      console.log("next is " + this.state.next);
 
       let i;
       let found = false;
@@ -72,7 +72,7 @@ class App extends Component {
     this.setState({
       possibilities: filteredPoss,
       failed: "possiblilities: "+ filteredPoss.map(x => x.name),
-      suggestions: (filteredPoss.filter(y => (y != "n/a"))).map(x => x[this.state.searchAttributes[this.state.count]])
+      suggestions: (filteredPoss.filter(y => (y != "n/a"))).map(x => x[this.state.searchAttributes[this.state.count+1]])
 
 
 
@@ -92,10 +92,10 @@ class App extends Component {
 
    
     console.log("FINAL POSS " + this.state.possibilities);
-    console.log(this.state.possibilities.length + " possibilites left: " + this.state.possibilities.map(x => x.name));
+    console.log(filteredPoss.length + " possibilites left: " + filteredPoss.map(x => x.name.concat(" ")));
 
 
-    if (this.state.possibilities.length == 1) {
+    if (filteredPoss.length == 1) {
       this.setState({
         title: this.state.possibilities[0].name
       })
@@ -113,25 +113,47 @@ class App extends Component {
   }
 }
 
+// async nextPage() {
+//   if (this.state.next != null) {
+//     console.log("NEXT: " + this.state.next)
 
+//     const response = await fetch(this.state.next);
+//     const json = await response.json();  
+//     this.setState({
+//       data: this.state.data + json.results,
+//       next:json.next,
+//       possibilities: this.state.possibilities + json.results
+//     })
+//     console.log("current page length" + json.results.length + " | possibilities length: " + this.state.possibilities.length)
+
+//     this.nextPage();
+//   }
+// }
 
   async componentDidMount() {
-    const response = await fetch('https://swapi.co/api/people/');
-    const json = await response.json();  
+    let response = await fetch('https://swapi.co/api/people/');
+    let json = await response.json();  
     this.setState({
        data: json.results,
        next: json.next,
        possibilities:json.results,
-       suggestions: (json.results.filter(y => (y != "n/a"))).map(x => x[this.state.searchAttributes[this.state.count]])
+      // suggestions: (json.results.filter(y => (y != "n/a"))).map(x => x[this.state.searchAttributes[this.state.count]])
+        suggestions: Array.from(new Set((json.results.filter(y => (y[this.state.searchAttributes[this.state.count]] != "n/a"))).map(x => x[this.state.searchAttributes[this.state.count]] + " ")))
       });
-      // while (json.next != null) {
-      //   const response = await fetch(json.results.next);
-      //   const json = await response.json();  
+      // this.nextPage();
+      while (json.next != null) {
+        response = await fetch(json.next);
+        json = await response.json(); 
+        console.log("POSS: " + this.state.possibilities.length)
+        console.log("current page: " + json.results.length)
+ 
 
-      //   this.setState({
-      //     possibilities: possibilities + json.results
-      //   })
-      // }
+        this.setState({
+          possibilities: this.state.possibilities.concat(json.results)
+        })
+        console.log("POSS: " + this.state.possibilities.map(x => x.name))
+
+      }
   }f
 
   render() {
@@ -153,7 +175,6 @@ class App extends Component {
 
         <input className = "input_field" placeholder= {"ex: " + this.state.suggestions} onKeyPress = {this.search}/>
 
-      {console.log(this.state.possibilities)}
 
         
       </div>
