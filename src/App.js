@@ -166,7 +166,6 @@ class App extends Component {
           <img className = "picture" src = {vader}></img>
           <img className = "pictureS" src = {stormtrooper}></img>
 
-
         </div>
 
         <p className = "question" >{this.state.questions[this.state.count]}</p>
